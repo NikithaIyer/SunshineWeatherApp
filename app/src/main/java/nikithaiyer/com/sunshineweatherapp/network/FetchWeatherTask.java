@@ -11,6 +11,9 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 
 public class FetchWeatherTask extends AsyncTask<String,Void,String> {
+
+  private final String LOG_TAG = FetchWeatherTask.class.getSimpleName();
+
   @Override
   protected String doInBackground(String... strings) {
     HttpURLConnection urlConnection = null;
@@ -38,7 +41,7 @@ public class FetchWeatherTask extends AsyncTask<String,Void,String> {
       }
       forecastJsonString = buffer.toString();
     } catch (IOException e) {
-      Log.e("PlaceholderFragment", "Error ", e);
+      Log.e(LOG_TAG, "Error ", e);
     } finally {
       if (urlConnection != null){
         urlConnection.disconnect();
@@ -47,7 +50,7 @@ public class FetchWeatherTask extends AsyncTask<String,Void,String> {
         try {
           reader.close();
         } catch (IOException e) {
-          Log.e("PlaceholderFragment","Error closing stream ",e);
+          Log.e(LOG_TAG,"Error closing stream ",e);
         }
       }
     }
