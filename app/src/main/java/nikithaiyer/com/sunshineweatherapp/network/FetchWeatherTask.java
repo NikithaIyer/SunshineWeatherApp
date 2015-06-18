@@ -4,23 +4,29 @@ import android.net.Uri;
 import android.os.AsyncTask;
 import android.util.Log;
 
+import org.json.JSONException;
+
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
-import java.net.URI;
 import java.net.URL;
 
-public class FetchWeatherTask extends AsyncTask<String,Void,String> {
+import nikithaiyer.com.sunshineweatherapp.WeatherAsyncResponse;
+import nikithaiyer.com.sunshineweatherapp.WeatherDataParser;
+
+public class FetchWeatherTask extends AsyncTask<String,Void,String[]> {
 
   private final String LOG_TAG = FetchWeatherTask.class.getSimpleName();
+  public WeatherAsyncResponse weatherAsyncResponse;
 
   @Override
-  protected String doInBackground(String... strings) {
+  protected String[] doInBackground(String... strings) {
     HttpURLConnection urlConnection = null;
     BufferedReader reader = null;
     String forecastJsonString = null;
+    String noOfDays = "7";
 
     try {
       if (strings.length == 0) {
@@ -30,7 +36,7 @@ public class FetchWeatherTask extends AsyncTask<String,Void,String> {
           .appendQueryParameter("q",strings[0])
           .appendQueryParameter("mode","json")
           .appendQueryParameter("units","metric")
-          .appendQueryParameter("cnt","7").build();
+          .appendQueryParameter("cnt", noOfDays).build();
       URL url = new URL(builtUri.toString());
       Log.d(LOG_TAG,"Built URL: "+ builtUri.toString());
       urlConnection = (HttpURLConnection) url.openConnection();
@@ -65,8 +71,18 @@ public class FetchWeatherTask extends AsyncTask<String,Void,String> {
         }
       }
     }
-    Log.d(LOG_TAG,"Forecast Json String: "+forecastJsonString);
-    return forecastJsonString;
+    Log.d(LOG_TAG,"Forecast Json String: "+ forecastJsonString);
+    WeatherDataParser parser = new WeatherDataParser();
+    try {
+      return parser.getWeatherDataFromJson(forecastJsonString,Integer.parseInt(noOfDays));
+    } catch (JSONException e) {
+      e.printStackTrace();
+    }
+    return null;
   }
 
+  @Override
+  protected void onPostExecute(String[] forecastList) {
+    weatherAsyncResponse.onComplete(forecastList);
+  }
 }
