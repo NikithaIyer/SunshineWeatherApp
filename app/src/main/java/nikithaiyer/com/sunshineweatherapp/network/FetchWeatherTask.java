@@ -1,5 +1,6 @@
 package nikithaiyer.com.sunshineweatherapp.network;
 
+import android.net.Uri;
 import android.os.AsyncTask;
 import android.util.Log;
 
@@ -8,6 +9,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
+import java.net.URI;
 import java.net.URL;
 
 public class FetchWeatherTask extends AsyncTask<String,Void,String> {
@@ -21,7 +23,16 @@ public class FetchWeatherTask extends AsyncTask<String,Void,String> {
     String forecastJsonString = null;
 
     try {
-      URL url = new URL(strings[0]);
+      if (strings.length == 0) {
+        return null;
+      }
+      Uri builtUri = Uri.parse("http://api.openweathermap.org/data/2.5/forecast/daily?").buildUpon()
+          .appendQueryParameter("q",strings[0])
+          .appendQueryParameter("mode","json")
+          .appendQueryParameter("units","metric")
+          .appendQueryParameter("cnt","7").build();
+      URL url = new URL(builtUri.toString());
+      Log.d(LOG_TAG,"Built URL: "+ builtUri.toString());
       urlConnection = (HttpURLConnection) url.openConnection();
       urlConnection.setRequestMethod("GET");
       urlConnection.connect();
@@ -54,6 +65,8 @@ public class FetchWeatherTask extends AsyncTask<String,Void,String> {
         }
       }
     }
+    Log.d(LOG_TAG,"Forecast Json String: "+forecastJsonString);
     return forecastJsonString;
   }
+
 }

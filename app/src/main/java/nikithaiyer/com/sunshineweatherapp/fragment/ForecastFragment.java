@@ -15,6 +15,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 
 import nikithaiyer.com.sunshineweatherapp.R;
+import nikithaiyer.com.sunshineweatherapp.network.FetchWeatherTask;
 
 public class ForecastFragment extends Fragment {
 
@@ -56,6 +57,8 @@ public class ForecastFragment extends Fragment {
   public boolean onOptionsItemSelected(MenuItem item) {
     int id = item.getItemId();
     if (id == R.id.action_refresh) {
+      FetchWeatherTask fetchWeatherTask = new FetchWeatherTask();
+      fetchWeatherTask.execute("30309");
       return true;
     }
     return super.onOptionsItemSelected(item);
