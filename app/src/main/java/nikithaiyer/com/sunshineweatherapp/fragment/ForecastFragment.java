@@ -71,9 +71,11 @@ public class ForecastFragment extends Fragment implements WeatherAsyncResponse {
 
   @Override
   public void onComplete(String[] forecastList) {
-    List<String> weekForecast = new ArrayList<>(Arrays.asList(forecastList));
-    adapter = new ArrayAdapter<String>(getActivity(), R.layout.list_item_forecast, R.id.list_item_forecast_textview, weekForecast);
-    listView.setAdapter(adapter);
+    adapter.clear();
+    if (forecastList != null) {
+      adapter.addAll(forecastList);
+      listView.setAdapter(adapter);
+    }
   }
 }
 
