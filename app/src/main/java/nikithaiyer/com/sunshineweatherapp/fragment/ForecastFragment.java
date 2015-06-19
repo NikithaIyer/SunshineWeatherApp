@@ -1,8 +1,9 @@
 package nikithaiyer.com.sunshineweatherapp.fragment;
 
-import android.app.Application;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -12,11 +13,11 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
-import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.List;
 
+import nikithaiyer.com.sunshineweatherapp.ForecastDetail;
 import nikithaiyer.com.sunshineweatherapp.R;
 import nikithaiyer.com.sunshineweatherapp.WeatherAsyncResponse;
 import nikithaiyer.com.sunshineweatherapp.network.FetchWeatherTask;
@@ -32,6 +33,7 @@ public class ForecastFragment extends Fragment implements WeatherAsyncResponse {
   @Override
   public void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
+    Log.d("WWWWW","******ForecastFragmentOnCreateCalled********");
     setHasOptionsMenu(true);
   }
 
@@ -50,7 +52,10 @@ public class ForecastFragment extends Fragment implements WeatherAsyncResponse {
       @Override
       public void onItemClick(AdapterView<?> adapterView, View view, int position, long l) {
         String forecast = adapter.getItem(position);
-        Toast.makeText(getActivity(),forecast,Toast.LENGTH_SHORT).show();
+//        Toast.makeText(getActivity(),forecast,Toast.LENGTH_SHORT).show();
+        Intent intent = new Intent(getActivity(), ForecastDetail.class);
+        intent.putExtra(Intent.EXTRA_TEXT,forecast);
+        startActivity(intent);
       }
     });
 
