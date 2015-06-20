@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.v4.app.Fragment;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -67,7 +68,7 @@ public class ForecastFragment extends Fragment implements WeatherAsyncResponse {
   }
 
   private String getZipCode() {
-    SharedPreferences sharedPreferences = getActivity().getSharedPreferences("nikithaiyer.com.sunshineweatherapp_preferences",Context.MODE_PRIVATE);
+    SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getActivity());
     return sharedPreferences.getString(getString(R.string.location_preference_key),getString(R.string.location_preference_default_value));
   }
 
