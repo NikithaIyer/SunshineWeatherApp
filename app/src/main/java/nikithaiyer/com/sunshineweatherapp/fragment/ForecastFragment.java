@@ -50,8 +50,6 @@ public class ForecastFragment extends Fragment implements WeatherAsyncResponse {
     List<String> weekForecast = new ArrayList<>();
     adapter = new ArrayAdapter<String>(getActivity(), R.layout.list_item_forecast, R.id.list_item_forecast_textview, weekForecast);
     listView = (ListView) rootView.findViewById(R.id.list_view_forecast);
-    String zipCode = getZipCode();
-    fetchWeatherTask.execute(zipCode);
     listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
       @Override
       public void onItemClick(AdapterView<?> adapterView, View view, int position, long l) {
@@ -65,6 +63,12 @@ public class ForecastFragment extends Fragment implements WeatherAsyncResponse {
 
 //    listView.setAdapter(adapter);
     return rootView;
+  }
+
+  @Override
+  public void onStart() {
+    updateWeather();
+    super.onStart();
   }
 
   private String getZipCode() {
@@ -82,13 +86,17 @@ public class ForecastFragment extends Fragment implements WeatherAsyncResponse {
   public boolean onOptionsItemSelected(MenuItem item) {
     int id = item.getItemId();
     if (id == R.id.action_refresh) {
-      FetchWeatherTask fetchWeatherTask = new FetchWeatherTask();
-      fetchWeatherTask.weatherAsyncResponse = this;
-      String zipCode = getZipCode();
-      fetchWeatherTask.execute(zipCode);
+      updateWeather();
       return true;
     }
     return super.onOptionsItemSelected(item);
+  }
+
+  private void updateWeather() {
+    FetchWeatherTask fetchWeatherTask = new FetchWeatherTask();
+    fetchWeatherTask.weatherAsyncResponse = this;
+    String zipCode = getZipCode();
+    fetchWeatherTask.execute(zipCode);
   }
 
   @Override
