@@ -1,5 +1,6 @@
 package nikithaiyer.com.sunshineweatherapp;
 
+import android.os.Bundle;
 import android.preference.ListPreference;
 import android.preference.Preference;
 import android.preference.PreferenceActivity;
@@ -17,6 +18,13 @@ import android.preference.PreferenceManager;
  * API Guide</a> for more information on developing a Settings UI.
  */
 public class SettingsActivity extends PreferenceActivity {
+  @Override
+  protected void onCreate(Bundle savedInstanceState) {
+    super.onCreate(savedInstanceState);
+    addPreferencesFromResource(R.xml.pref_general);
+    bindPreferenceSummaryToValue(findPreference(getString(R.string.location_preference_key)));
+  }
+
   /**
    * A preference value change listener that updates the preference's summary
    * to reflect its new value.
