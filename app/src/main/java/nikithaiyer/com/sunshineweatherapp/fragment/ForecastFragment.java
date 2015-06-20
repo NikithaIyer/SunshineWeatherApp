@@ -17,7 +17,7 @@ import android.widget.ListView;
 import java.util.ArrayList;
 import java.util.List;
 
-import nikithaiyer.com.sunshineweatherapp.ForecastDetail;
+import nikithaiyer.com.sunshineweatherapp.ForecastDetailActivity;
 import nikithaiyer.com.sunshineweatherapp.R;
 import nikithaiyer.com.sunshineweatherapp.WeatherAsyncResponse;
 import nikithaiyer.com.sunshineweatherapp.network.FetchWeatherTask;
@@ -53,7 +53,7 @@ public class ForecastFragment extends Fragment implements WeatherAsyncResponse {
       public void onItemClick(AdapterView<?> adapterView, View view, int position, long l) {
         String forecast = adapter.getItem(position);
 //        Toast.makeText(getActivity(),forecast,Toast.LENGTH_SHORT).show();
-        Intent intent = new Intent(getActivity(), ForecastDetail.class);
+        Intent intent = new Intent(getActivity(), ForecastDetailActivity.class);
         intent.putExtra(Intent.EXTRA_TEXT,forecast);
         startActivity(intent);
       }

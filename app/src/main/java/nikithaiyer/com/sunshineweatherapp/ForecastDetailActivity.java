@@ -7,7 +7,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 
 
-public class ForecastDetail extends ActionBarActivity {
+public class ForecastDetailActivity extends ActionBarActivity {
 
   @Override
   protected void onCreate(Bundle savedInstanceState) {
@@ -32,6 +32,7 @@ public class ForecastDetail extends ActionBarActivity {
 
     //noinspection SimplifiableIfStatement
     if (id == R.id.action_settings) {
+      startActivity(new Intent(this,SettingsActivity.class));
       return true;
     }
 
