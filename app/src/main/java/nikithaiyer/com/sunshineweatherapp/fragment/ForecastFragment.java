@@ -1,6 +1,8 @@
 package nikithaiyer.com.sunshineweatherapp.fragment;
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.util.Log;
@@ -47,20 +49,26 @@ public class ForecastFragment extends Fragment implements WeatherAsyncResponse {
     List<String> weekForecast = new ArrayList<>();
     adapter = new ArrayAdapter<String>(getActivity(), R.layout.list_item_forecast, R.id.list_item_forecast_textview, weekForecast);
     listView = (ListView) rootView.findViewById(R.id.list_view_forecast);
-    fetchWeatherTask.execute("411011");
+    String zipCode = getZipCode();
+    fetchWeatherTask.execute(zipCode);
     listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
       @Override
       public void onItemClick(AdapterView<?> adapterView, View view, int position, long l) {
         String forecast = adapter.getItem(position);
 //        Toast.makeText(getActivity(),forecast,Toast.LENGTH_SHORT).show();
         Intent intent = new Intent(getActivity(), ForecastDetailActivity.class);
-        intent.putExtra(Intent.EXTRA_TEXT,forecast);
+        intent.putExtra(Intent.EXTRA_TEXT, forecast);
         startActivity(intent);
       }
     });
 
 //    listView.setAdapter(adapter);
     return rootView;
+  }
+
+  private String getZipCode() {
+    SharedPreferences sharedPreferences = getActivity().getSharedPreferences("nikithaiyer.com.sunshineweatherapp_preferences",Context.MODE_PRIVATE);
+    return sharedPreferences.getString(getString(R.string.location_preference_key),getString(R.string.location_preference_default_value));
   }
 
   @Override
@@ -75,7 +83,8 @@ public class ForecastFragment extends Fragment implements WeatherAsyncResponse {
     if (id == R.id.action_refresh) {
       FetchWeatherTask fetchWeatherTask = new FetchWeatherTask();
       fetchWeatherTask.weatherAsyncResponse = this;
-      fetchWeatherTask.execute("411011");
+      String zipCode = getZipCode();
+      fetchWeatherTask.execute(zipCode);
       return true;
     }
     return super.onOptionsItemSelected(item);
