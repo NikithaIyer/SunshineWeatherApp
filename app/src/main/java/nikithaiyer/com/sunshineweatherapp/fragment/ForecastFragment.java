@@ -3,6 +3,7 @@ package nikithaiyer.com.sunshineweatherapp.fragment;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.net.Uri;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.v4.app.Fragment;
@@ -36,7 +37,7 @@ public class ForecastFragment extends Fragment implements WeatherAsyncResponse {
   @Override
   public void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
-    Log.d("WWWWW","******ForecastFragmentOnCreateCalled********");
+    Log.d("WWWWW", "******ForecastFragmentOnCreateCalled********");
     setHasOptionsMenu(true);
   }
 
@@ -87,6 +88,14 @@ public class ForecastFragment extends Fragment implements WeatherAsyncResponse {
     int id = item.getItemId();
     if (id == R.id.action_refresh) {
       updateWeather();
+      return true;
+    }
+    if (id == R.id.action_view_location) {
+      Intent intent = new Intent(Intent.ACTION_VIEW);
+      intent.setData(Uri.parse("geo:0,0?").buildUpon().appendQueryParameter("q",getZipCode()).build());
+      if (intent.resolveActivity(getActivity().getPackageManager())!= null) {
+        startActivity(intent);
+      }
       return true;
     }
     return super.onOptionsItemSelected(item);
